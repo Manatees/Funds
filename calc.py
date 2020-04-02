@@ -41,15 +41,35 @@ def redemption(amount, rate, T):
 
 
 def middleValue(buy_price, rate, T, amount, price):
-    # net_price = buy_price / (1 + rate)
-    # fee_value = buy_price - net_price
-    # buy_amount = net_price / T
-    fee_value, buy_amount = purchase(buy_price, rate, T)    
+    """
+    计算申购后持仓成本价
+        
+    Args:
+        buy_price:  申购金额
+        rate:       申购费率
+        T:          T日净值
+        amount:     持有份额
+        price:      投入金额
+    Returns:
+        (持仓价，申购份额，申购费用)
+    """
+    buy_amount, fee_value = purchase(buy_price, rate, T)  
+    avg_price = (price + buy_price) / (amount + buy_amount)
 
-    return ((price + buy_price) / (amount + buy_amount), buy_amount, fee_value)
+    return (avg_price, buy_amount, fee_value)
 
 
+class Fund(object):
+    """docstring for Fund"""
+    def __init__(self, investment, hold_share):
+        super(Fund, self).__init__()
+        self.investment = investment
+        self.hold_share = hold_share
+        
 
 if __name__ == '__main__':
-    calculated_val = middleValue(buy_price=1000, rate=0.01, T=0.7977, amount=19456.30, price=17300)
-    print(calculated_val)
+    calculated_val = middleValue(buy_price=10_000, rate=0.01, T=0.8015, amount=19456.30, price=17300)
+    title = ('持仓价', '购买数量', '购买费用')
+    for i in range(3):
+        print(title[i], round(calculated_val[i], 4))
+    # print(calculated_val)
