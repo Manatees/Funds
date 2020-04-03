@@ -12,13 +12,16 @@ class buy_record(object):
     def __str__(self):
         return '{} {:.2f} {:.4f} {:.2f}'.format(self.date.isoformat(), self.amount, self.T, self.hold_share)
 
-
+    def hold_days(self):
+        dt = date.today() - self.date
+        return dt.days
 
 def main():
     line = '2020-03-23  100.00  0.8126  122.94'
     param = filter(None, line.split(' '))
     rec1 = buy_record(*param)
     print(rec1)
+    print(rec1.hold_days())
 
 if __name__ == '__main__':
     main()
@@ -46,3 +49,13 @@ if __name__ == '__main__':
 # 2019-08-01  100.00  0.9180  108.82  
 # 2019-07-17  100.00  0.9607  103.99
 
+buy_rate
+0 <= price < 50W    0.10%
+50W <= price <100W  0.05%
+100W<=              1000
+
+sale_rate
+0 <= days < 7       1.50%
+7 <= days < 360     0.50%
+365<= days < 730    0.25%
+730<= days          0.00%

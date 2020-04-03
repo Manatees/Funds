@@ -58,13 +58,6 @@ def middleValue(buy_price, rate, T, amount, price):
 
     return (avg_price, buy_amount, fee_value)
 
-
-class Fund(object):
-    """docstring for Fund"""
-    def __init__(self, investment, hold_share):
-        super(Fund, self).__init__()
-        self.investment = investment
-        self.hold_share = hold_share
         
 
 if __name__ == '__main__':
