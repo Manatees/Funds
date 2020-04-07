@@ -12,6 +12,26 @@ class Fund(object):
         pass
 
 
+class RateHelper:
+    """docstring for RateHelper"""
+    def __init__(self, path_file):        
+        self.rate_book = {}
+        self.path_file = path_file
+        self.__load_from_file()
+
+    def rates(self, code):
+        return self.rate_book.get(code)
+
+    def __load_from_file(self):        
+        with open(self.path_file, 'r') as f:
+            lines = f.readlines()
+        for i in range(len(lines)):
+            _rate = Rate(lines[i])
+            # _key = str(_rate.code)
+            self.rate_book[str(_rate.code)] = _rate
+
+        
+
 class Rate(object):
     """docstring for Rate"""
     def __init__(self, arg):
@@ -34,6 +54,9 @@ class Rate(object):
         self.limit_value = ret[1]
         return self.limit, self.limit_value
 
+    def __str__(self):
+        return 'code: {}, during: {}'.format(self.code, self.during)
+
     def get_rate_value(self, opt):
         ret = None
         for x in self.during:
@@ -46,10 +69,15 @@ class Rate(object):
             
         
 if __name__ == '__main__':
-    r = Rate('161725|7:0.015,360:0.0005,730:0.0025|730:0')
-    print(r.code, r.limit_value)
-    print('during', r.during)
-    print(r.get_rate_value(730))
+    # r = Rate('161725|7:0.015,360:0.0005,730:0.0025|730:0\n')
+    # print(r.code, r.limit_value)
+    # print('during', r.during)
+    # print(r.get_rate_value(730))
+    rh = RateHelper(r'G:\Python3\FUND\data\redemption_rate.dat')
+    _rate = rh.rates('161725')
+    print(_rate)
+    print(_rate.code)
+    print(_rate.get_rate_value(7))
     
 # buy_rate
 # 0 <= price < 50W    0.10%
